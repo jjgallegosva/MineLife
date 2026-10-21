@@ -1,0 +1,57 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="128dp"
+    android:height="128dp"
+    android:viewportWidth="128"
+    android:viewportHeight="128">
+
+  <!-- Fondo circular oscuro -->
+  <path
+      android:pathData="M64,64m-56,0a56,56 0,1 1,112 0a56,56 0,1 1,-112 0"
+      android:fillColor="#FF1F242B" />
+
+  <!-- Línea izquierda de la tijera -->
+  <path
+      android:pathData="M46,28L70,63"
+      android:fillColor="#00000000"
+      android:strokeColor="#FFC4A574"
+      android:strokeWidth="6"
+      android:strokeLineCap="round" />
+
+  <!-- Línea derecha de la tijera -->
+  <path
+      android:pathData="M82,28L58,63"
+      android:fillColor="#00000000"
+      android:strokeColor="#FFC4A574"
+      android:strokeWidth="6"
+      android:strokeLineCap="round" />
+
+  <!-- Aro izquierdo -->
+  <path
+      android:pathData="M36,86m-8,0a8,8 0,1 1,16 0a8,8 0,1 1,-16 0"
+      android:fillColor="#00000000"
+      android:strokeColor="#FFC4A574"
+      android:strokeWidth="4" />
+
+  <!-- Aro derecho -->
+  <path
+      android:pathData="M92,86m-8,0a8,8 0,1 1,16 0a8,8 0,1 1,-16 0"
+      android:fillColor="#00000000"
+      android:strokeColor="#FFC4A574"
+      android:strokeWidth="4" />
+
+  <!-- Unión hacia aro izquierdo -->
+  <path
+      android:pathData="M58,63L40,82"
+      android:fillColor="#00000000"
+      android:strokeColor="#FFC4A574"
+      android:strokeWidth="6"
+      android:strokeLineCap="round" />
+
+  <!-- Unión hacia aro derecho -->
+  <path
+      android:pathData="M70,63L88,82"
+      android:fillColor="#00000000"
+      android:strokeColor="#FFC4A574"
+      android:strokeWidth="6"
+      android:strokeLineCap="round" />
+</vector>

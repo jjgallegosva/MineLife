@@ -1,0 +1,62 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="128dp"
+    android:height="128dp"
+    android:viewportWidth="128"
+    android:viewportHeight="128">
+
+  <!-- Fondo circular oscuro -->
+  <path
+      android:pathData="M64,64m-56,0a56,56 0,1 1,112 0a56,56 0,1 1,-112 0"
+      android:fillColor="#FF1F242B" />
+
+  <!-- Parte superior del casco -->
+  <path
+      android:pathData="M38,52
+                          C42,39 52,31 64,31
+                          C76,31 86,39 90,52
+                          L82,52
+                          C79,44 72,39 64,39
+                          C56,39 49,44 46,52
+                          Z"
+      android:fillColor="#FFC4A574" />
+
+  <!-- Ala / borde del casco -->
+  <path
+      android:pathData="M34,56
+                          C40,49 50,46 64,46
+                          C78,46 88,49 94,56
+                          L89,61
+                          C82,57 74,55 64,55
+                          C54,55 46,57 39,61
+                          Z"
+      android:fillColor="#FFC4A574" />
+
+  <!-- Cuerpo inferior -->
+  <path
+      android:pathData="M44,62
+                          L84,62
+                          L84,78
+                          L44,78
+                          Z"
+      android:fillColor="#FFC4A574" />
+
+  <!-- Corte interior oscuro para darle la misma sensación del icono -->
+  <path
+      android:pathData="M52,66
+                          L76,66
+                          C73,71 68,74 61,74
+                          L52,74
+                          Z"
+      android:fillColor="#FF1F242B" />
+
+  <!-- Base inferior -->
+  <path
+      android:pathData="M40,80
+                          L88,80
+                          C86,84 81,87 74,87
+                          L54,87
+                          C47,87 42,84 40,80
+                          Z"
+      android:fillColor="#FFC4A574" />
+
+</vector>

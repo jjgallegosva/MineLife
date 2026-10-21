@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "79153739834",
+    "project_id": "minelife-4994e",
+    "storage_bucket": "minelife-4994e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79153739834:android:909b6560c1e9e5f4c91d03",
+        "android_client_info": {
+          "package_name": "com.example.aplicacionvariada"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "79153739834-8lcbcsd12kjsdq57b8hemr47dcuut4bj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.aplicacionvariada",
+            "certificate_hash": "052efebd6b6e15eec5637c5eca112b4fd5aa64ee"
+          }
+        },
+        {
+          "client_id": "79153739834-ovh0125tb5fnpqbslfcabr8tcvf6j1f5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAm9yt9vOHg5hDCZOJ35vYDcfY6P59lY0s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "79153739834-ovh0125tb5fnpqbslfcabr8tcvf6j1f5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

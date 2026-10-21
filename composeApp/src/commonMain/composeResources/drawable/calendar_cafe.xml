@@ -1,0 +1,91 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+  <!-- Fondo circular beige -->
+  <path
+      android:fillColor="#F3EEE6"
+      android:pathData="M60,8a52,52 0,1 0,0.1 0z" />
+
+  <!-- Sombra suave aproximada -->
+  <path
+      android:fillColor="#33000000"
+      android:pathData="M39,35h48a3,3 0,0 1,3 3v54a3,3 0,0 1,-3 3h-48a3,3 0,0 1,-3 -3v-54a3,3 0,0 1,3 -3z" />
+
+  <!-- Hoja blanca -->
+  <path
+      android:fillColor="#FFFFFF"
+      android:pathData="M36,31h48a3,3 0,0 1,3 3v55a3,3 0,0 1,-3 3h-48a3,3 0,0 1,-3 -3v-55a3,3 0,0 1,3 -3z" />
+
+  <!-- Borde dorado -->
+  <path
+      android:fillColor="@android:color/transparent"
+      android:strokeColor="#B78A45"
+      android:strokeWidth="3"
+      android:pathData="M36,31h48a3,3 0,0 1,3 3v55a3,3 0,0 1,-3 3h-48a3,3 0,0 1,-3 -3v-55a3,3 0,0 1,3 -3z" />
+
+  <!-- Barra superior dorada -->
+  <path
+      android:fillColor="#C59B5A"
+      android:pathData="M36,31h48a2,2 0,0 1,2 2v11h-50z" />
+
+  <!-- Línea inferior de la barra -->
+  <path
+      android:strokeColor="#B78A45"
+      android:strokeWidth="2"
+      android:fillColor="@android:color/transparent"
+      android:pathData="M36,44h48" />
+
+  <!-- Ganchos superiores -->
+  <path
+      android:fillColor="#B78A45"
+      android:pathData="M44,24h5a2,2 0,0 1,2 2v12a2,2 0,0 1,-2 2h-5a2,2 0,0 1,-2 -2v-12a2,2 0,0 1,2 -2z" />
+
+  <path
+      android:fillColor="#B78A45"
+      android:pathData="M71,24h5a2,2 0,0 1,2 2v12a2,2 0,0 1,-2 2h-5a2,2 0,0 1,-2 -2v-12a2,2 0,0 1,2 -2z" />
+
+  <!-- Brillos de ganchos -->
+  <path
+      android:fillColor="#E6C78F"
+      android:pathData="M45,24h2a1,1 0,0 1,1 1v10a1,1 0,0 1,-1 1h-2a1,1 0,0 1,-1 -1v-10a1,1 0,0 1,1 -1z" />
+
+  <path
+      android:fillColor="#E6C78F"
+      android:pathData="M72,24h2a1,1 0,0 1,1 1v10a1,1 0,0 1,-1 1h-2a1,1 0,0 1,-1 -1v-10a1,1 0,0 1,1 -1z" />
+
+  <!-- Cuadritos tipo calendario -->
+  <path
+      android:fillColor="#8A6A3D"
+      android:pathData="M49,56h5v5h-5z" />
+
+  <path
+      android:fillColor="#8A6A3D"
+      android:pathData="M58,56h5v5h-5z" />
+
+  <path
+      android:fillColor="#8A6A3D"
+      android:pathData="M49,66h5v5h-5z" />
+
+  <path
+      android:fillColor="#8A6A3D"
+      android:pathData="M49,76h5v5h-5z" />
+
+  <path
+      android:fillColor="#8A6A3D"
+      android:pathData="M58,76h5v5h-5z" />
+
+  <!-- Letra I -->
+  <path
+      android:fillColor="#5E4630"
+      android:pathData="M63,55h5v24h-5z" />
+
+  <!-- Letra R aproximada -->
+  <path
+      android:fillColor="#5E4630"
+      android:pathData="M71,55h10a7,7 0,0 1,0 14h-5l7,10h-6l-6,-9v9h-5v-24z
+                          M76,60v5h5a2.5,2.5 0,0 0,0 -5z" />
+
+</vector>

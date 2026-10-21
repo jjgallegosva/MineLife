@@ -1,0 +1,42 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="128dp"
+    android:height="128dp"
+    android:viewportWidth="256"
+    android:viewportHeight="256">
+
+  <!-- Fondo circular -->
+  <path
+      android:pathData="M128,128m-112,0a112,112 0,1 1,224 0a112,112 0,1 1,-224 0"
+      android:fillColor="#C4A574"/>
+
+  <!-- Cuerpo del calendario -->
+  <path
+      android:pathData="M83,70L173,70A18,18 0,0 1,191 88L191,172A18,18 0,0 1,173 190L83,190A18,18 0,0 1,65 172L65,88A18,18 0,0 1,83 70z"
+      android:strokeWidth="14"
+      android:fillColor="#00000000"
+      android:strokeColor="#FFFFFF"/>
+
+  <!-- Línea horizontal superior -->
+  <path
+      android:pathData="M65,104h126"
+      android:fillColor="#00000000"
+      android:strokeWidth="14"
+      android:strokeColor="#FFFFFF"
+      android:strokeLineCap="round"/>
+
+  <!-- Ganchos superiores -->
+  <path
+      android:pathData="M95,54v34M161,54v34"
+      android:fillColor="#00000000"
+      android:strokeWidth="14"
+      android:strokeColor="#FFFFFF"
+      android:strokeLineCap="round"/>
+
+  <!-- Líneas internas -->
+  <path
+      android:pathData="M96,138h22M138,138h22M96,166h22M138,166h22"
+      android:fillColor="#00000000"
+      android:strokeWidth="12"
+      android:strokeColor="#FFFFFF"
+      android:strokeLineCap="round"/>
+</vector>

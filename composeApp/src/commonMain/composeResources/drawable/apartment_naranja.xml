@@ -1,0 +1,30 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="512dp"
+    android:height="512dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+
+  <!-- Relleno negro -->
+  <path
+      android:fillColor="#111111"
+      android:pathData="M96,236 L256,76 L416,236 L416,448 L304,448 L304,336 L208,336 L208,448 L96,448 Z" />
+
+  <!-- Borde anaranjado -->
+  <path
+      android:fillColor="#00000000"
+      android:strokeColor="#C4A574"
+      android:strokeWidth="28"
+      android:strokeLineJoin="round"
+      android:strokeLineCap="round"
+      android:pathData="M96,236 L256,76 L416,236 L416,448 L304,448 L304,336 L208,336 L208,448 L96,448 Z" />
+
+  <!-- Techo anaranjado -->
+  <path
+      android:fillColor="#00000000"
+      android:strokeColor="#C4A574"
+      android:strokeWidth="36"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round"
+      android:pathData="M32,272 L256,48 L480,272" />
+
+</vector>
