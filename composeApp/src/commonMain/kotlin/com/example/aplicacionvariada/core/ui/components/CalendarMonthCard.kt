@@ -1,4 +1,4 @@
-package com.example.aplicacionvariada.feature.calendar.presentation.components
+package com.example.aplicacionvariada.core.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

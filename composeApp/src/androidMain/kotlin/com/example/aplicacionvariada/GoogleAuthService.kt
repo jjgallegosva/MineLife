@@ -1,10 +1,11 @@
 package com.example.aplicacionvariada
 
-
 import android.content.Context
+import android.util.Log
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
+import com.example.aplicacionvariada.auth.GoogleAuthClient
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.FirebaseAuth
@@ -13,18 +14,19 @@ import kotlinx.coroutines.tasks.await
 
 class GoogleAuthService(
     private val context: Context
-) {
+) : GoogleAuthClient {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    suspend fun registerWithGoogle(): Result<String> {
+    override suspend fun registerWithGoogle(): Result<String> {
+        println("GoogleFlow: SE PULSÓ EL BOTÓN DE GOOGLE3")
         return try {
+            val credentialManager = CredentialManager.create(context)
+
             val googleOption = GetGoogleIdOption.Builder()
-                .setFilterByAuthorizedAccounts(false)
                 .setServerClientId(
-                    context.getString(
-                        com.example.aplicacionvariada.R.string.default_web_client_id
-                    )
+                    context.getString(R.string.default_web_client_id)
                 )
+                .setFilterByAuthorizedAccounts(false)
                 .setAutoSelectEnabled(false)
                 .build()
 
@@ -32,7 +34,7 @@ class GoogleAuthService(
                 .addCredentialOption(googleOption)
                 .build()
 
-            val credentialManager = CredentialManager.create(context)
+            // Solicitar una credencial nueva al usuario.
             val result = credentialManager.getCredential(
                 context = context,
                 request = request
@@ -42,27 +44,45 @@ class GoogleAuthService(
 
             if (
                 credential !is CustomCredential ||
-                credential.type != GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
+                credential.type !=
+                GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
             ) {
-                return Result.failure(
-                    IllegalStateException("No se obtuvo una credencial válida de Google.")
+                throw IllegalStateException(
+                    "Google no devolvió un ID token válido."
                 )
             }
 
             val googleCredential =
                 GoogleIdTokenCredential.createFrom(credential.data)
 
+            // No guardar ni reutilizar este token.
             val firebaseCredential = GoogleAuthProvider.getCredential(
                 googleCredential.idToken,
                 null
             )
+            Log.e("GoogleAuthService", "2. Token de Google obtenido")
+            Log.e("GoogleAuthService", "3. Enviando credencial a Firebase")
 
-            val authResult = auth.signInWithCredential(firebaseCredential).await()
+            val authResult =
+                auth.signInWithCredential(firebaseCredential).await()
+            Log.e(
+                "GoogleAuthService",
+                "Firebase login exitoso: ${authResult.user?.uid}"
+            )
             val user = authResult.user
-                ?: throw IllegalStateException("Firebase no devolvió un usuario.")
+                ?: throw IllegalStateException(
+                    "Firebase no devolvió un usuario."
+                )
 
             Result.success(user.uid)
+
         } catch (e: Exception) {
+            Log.e(
+                "GoogleAuthService",
+                "Falló la autenticación con Google",
+                e
+            )
+
             Result.failure(e)
         }
     }

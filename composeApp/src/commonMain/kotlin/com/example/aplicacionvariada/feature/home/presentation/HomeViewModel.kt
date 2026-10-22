@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.aplicacionvariada.feature.calendar.data.RegimeDataStore
 import com.example.aplicacionvariada.feature.home.domain.CalculateMineRegimeUseCase
+import com.example.aplicacionvariada.feature.home.presentation.model.HomeUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

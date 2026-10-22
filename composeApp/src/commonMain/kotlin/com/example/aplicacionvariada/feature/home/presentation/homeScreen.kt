@@ -21,18 +21,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.layout.statusBarsPadding
+import com.example.aplicacionvariada.core.ui.components.InfoCard
+import com.example.aplicacionvariada.core.ui.components.MineBottomNavigation
 import com.example.aplicacionvariada.core.ui.components.MineProfileMenu
+import com.example.aplicacionvariada.core.ui.components.MineStatusCard
+import com.example.aplicacionvariada.core.ui.components.QuickAccess
+import com.example.aplicacionvariada.core.ui.components.SavingsCard
+import com.example.aplicacionvariada.core.ui.components.SummaryCard
 
 import com.example.aplicacionvariada.feature.calendar.data.RegimeDataStore
 import com.example.aplicacionvariada.feature.home.presentation.HomeViewModel
 
-import com.minelife.core.ui.components.MineStatusCard
-import com.minelife.core.ui.components.QuickAccess
-import com.minelife.core.ui.components.SummaryCard
-import com.minelife.core.ui.components.InfoCard
-import com.minelife.core.ui.components.SavingsCard
 import com.minelife.core.ui.components.WeekCard
-import com.minelife.core.ui.components.MineBottomNavigation
+
 import com.minelife.core.ui.theme.MineBackground
 import com.minelife.core.ui.theme.MineNavy
 import com.minelife.core.ui.theme.MineOrange

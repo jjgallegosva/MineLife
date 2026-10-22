@@ -1,4 +1,4 @@
-package com.example.aplicacionvariada.feature.home.presentation
+package com.example.aplicacionvariada.feature.home.presentation.model
 
 import com.example.aplicacionvariada.feature.home.domain.MineRegimeStatus
 
@@ -7,4 +7,3 @@ data class HomeUiState(
     val regimeStatus: MineRegimeStatus? = null,
     val errorMessage: String? = null
 )
-

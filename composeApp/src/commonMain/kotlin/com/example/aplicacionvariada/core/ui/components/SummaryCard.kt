@@ -1,4 +1,5 @@
-package com.minelife.core.ui.components
+package com.example.aplicacionvariada.core.ui.components
+
 
 import androidx.compose.material.icons.outlined.Backpack
 

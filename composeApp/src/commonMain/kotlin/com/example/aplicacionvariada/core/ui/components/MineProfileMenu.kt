@@ -133,7 +133,7 @@ private fun MineProfileMenuPreview() {
 
     MaterialTheme {
         Box(
-            modifier = Modifier
+            modifier = Modifier    
                 .fillMaxWidth()
                 .fillMaxHeight()
                 .padding(24.dp),

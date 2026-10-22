@@ -54,10 +54,12 @@ fun AdvanceNavigationWrapper(regimeDataStore: RegimeDataStore) {
                         },
 
                         onGoogleLogin = {
+                            println("GoogleFlow: SE PULSÓ EL BOTÓN DE GOOGLE")
                             googleError = null
 
                             coroutineScope.launch {
                                 try {
+                                    println("GoogleFlow: SE PULSÓ EL BOTÓN DE GOOGLE2")
                                     val result = googleAuthClient.registerWithGoogle()
 
                                     result.onSuccess {
