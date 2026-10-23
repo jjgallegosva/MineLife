@@ -44,6 +44,7 @@ fun LoginScreen(
     onFacebookLogin: () -> Unit = {},
     onForgotPassword: () -> Unit = {},
     onRegister: () -> Unit = {},
+    isLoading: Boolean = false,
     modifier: Modifier = Modifier
 ){
     var email by remember { mutableStateOf("") }
@@ -279,6 +280,7 @@ fun LoginScreen(
             Spacer(Modifier.height(24.dp))
 
             Button(
+                enabled = !isLoading,
                 onClick = {
                     when {
                         email.isBlank() ||
@@ -307,11 +309,11 @@ fun LoginScreen(
                     contentColor = Color.White
                 )
             ) {
-                Text(
-                    text = "Iniciar sesión",
-                    fontSize = 19.sp,
-                    fontWeight = FontWeight.Medium
-                )
+                if (isLoading) {
+                    CircularProgressIndicator(Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
+                    Spacer(Modifier.width(12.dp))
+                }
+                Text(text = if (isLoading) "Iniciando sesión…" else "Iniciar sesión", fontSize = 19.sp, fontWeight = FontWeight.Medium)
             }
         }
         Spacer(Modifier.height(36.dp))

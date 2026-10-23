@@ -29,6 +29,7 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
+            implementation(libs.ktor.client.okhttp)
             implementation(libs.androidx.activity.compose)
             androidMain.dependencies {
                 implementation("com.google.firebase:firebase-auth:24.0.1")
@@ -40,6 +41,9 @@ kotlin {
             }
         }
         commonMain.dependencies {
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
@@ -70,6 +74,9 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+        }
     }
 }
 
@@ -83,6 +90,7 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        manifestPlaceholders["allowCleartextTraffic"] = "false"
     }
     packaging {
         resources {
@@ -90,8 +98,12 @@ android {
         }
     }
     buildTypes {
+        getByName("debug") {
+            manifestPlaceholders["allowCleartextTraffic"] = "true"
+        }
         getByName("release") {
             isMinifyEnabled = false
+            manifestPlaceholders["allowCleartextTraffic"] = "false"
         }
     }
     compileOptions {

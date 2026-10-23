@@ -41,6 +41,7 @@ fun RegisterScreen(
     onGoogleRegister: () -> Unit = {},
     onFacebookRegister: () -> Unit = {},
     onLogin: () -> Unit = {},
+    isLoading: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     var name by remember { mutableStateOf("") }
@@ -336,6 +337,7 @@ fun RegisterScreen(
             Spacer(Modifier.height(22.dp))
 
             Button(
+                enabled = !isLoading,
                 onClick = {
                     val normalizedEmail = email.trim()
 
@@ -351,9 +353,10 @@ fun RegisterScreen(
                                 "Ingresa un correo electrónico válido."
                         }
 
-                        password.length < 8 -> {
+                        password.length < 12 || !password.any(Char::isLowerCase) ||
+                                !password.any(Char::isUpperCase) || !password.any(Char::isDigit) -> {
                             errorMessage =
-                                "La contraseña debe tener al menos 8 caracteres."
+                                "Usa 12 caracteres como mínimo, con mayúscula, minúscula y número."
                         }
 
                         password != confirmPassword -> {
@@ -380,11 +383,11 @@ fun RegisterScreen(
                     contentColor = Color.White
                 )
             ) {
-                Text(
-                    text = "Crear cuenta",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Medium
-                )
+                if (isLoading) {
+                    CircularProgressIndicator(Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
+                    Spacer(Modifier.width(12.dp))
+                }
+                Text(text = if (isLoading) "Creando cuenta…" else "Crear cuenta", fontSize = 18.sp, fontWeight = FontWeight.Medium)
             }
         }
 

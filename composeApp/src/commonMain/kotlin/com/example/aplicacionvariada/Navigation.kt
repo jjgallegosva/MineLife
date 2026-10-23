@@ -18,6 +18,7 @@ import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import com.example.aplicacionvariada.feature.jornadaLaboral.presentation.ui.JornadaCalendarScreen
 import com.example.aplicacionvariada.feature.register.presentation.RegisterScreen
+import com.example.aplicacionvariada.feature.register.presentation.EmailVerificationDialog
 import com.example.nexogestion.ui.auth.RecoverPasswordScreen
 import com.minelife.ui.login.LoginScreen
 import jornadaPatterns
@@ -28,12 +29,24 @@ import androidx.compose.material3.TextButton
 import com.example.aplicacionvariada.feature.calendar.presentation.CalendarScreen
 import com.minelife.ui.home.HomeScreen
 import com.example.aplicacionvariada.feature.calendar.data.RegimeDataStore
+import com.example.aplicacionvariada.core.network.AuthRepository
+import com.example.aplicacionvariada.core.network.toApiUserMessage
+import kotlinx.coroutines.CancellationException
 
 @Composable
 fun AdvanceNavigationWrapper(regimeDataStore: RegimeDataStore) {
     val googleAuthClient = rememberGoogleAuthClient()
     val coroutineScope = rememberCoroutineScope()
     var googleError by remember { mutableStateOf<String?>(null) }
+    var authMessage by remember { mutableStateOf<String?>(null) }
+    var authBusy by remember { mutableStateOf(false) }
+    var verificationEmail by remember { mutableStateOf<String?>(null) }
+    var verificationCode by remember { mutableStateOf("") }
+    var verificationError by remember { mutableStateOf<String?>(null) }
+    var verificationInfo by remember { mutableStateOf<String?>(null) }
+    var verificationBusy by remember { mutableStateOf(false) }
+    var userDisplayName by remember { mutableStateOf("MineLife") }
+    val authRepository = remember { AuthRepository() }
     val backStack = rememberNavBackStack(serializersConfig,Routes.Splash)
     NavDisplay(
         backStack= backStack,
@@ -48,9 +61,27 @@ fun AdvanceNavigationWrapper(regimeDataStore: RegimeDataStore) {
                 is Routes.Login -> NavEntry(key) {
                     LoginScreen(
                         onLogin = { email, password ->
-                            // Aquí conectarás la autenticación.
-                            // Cuando sea exitosa:
-                            // backStack.add(Routes.Home)
+                            if (!authBusy) coroutineScope.launch {
+                                authBusy = true
+                                try {
+                                    authRepository.login(email, password)
+                                    userDisplayName = try {
+                                        authRepository.currentProfile().displayName
+                                    } catch (error: CancellationException) {
+                                        throw error
+                                    } catch (_: Exception) {
+                                        "MineLife"
+                                    }
+                                    backStack.clear()
+                                    backStack.add(Routes.Home)
+                                } catch (error: CancellationException) {
+                                    throw error
+                                } catch (error: Exception) {
+                                    authMessage = error.toApiUserMessage()
+                                } finally {
+                                    authBusy = false
+                                }
+                            }
                         },
 
                         onGoogleLogin = {
@@ -83,14 +114,30 @@ fun AdvanceNavigationWrapper(regimeDataStore: RegimeDataStore) {
                         },
                         onRegister = {
                             backStack.add(Routes.Register)
-                        }
+                        },
+                        isLoading = authBusy,
                     )
                 }
                 is Routes.Register -> NavEntry(key) {
                     RegisterScreen(
                         onRegister = { name, email, password ->
-                            // Aquí conectarás tu ViewModel o repositorio.
-                            // Navega a Home cuando el registro sea exitoso.
+                            if (!authBusy) coroutineScope.launch {
+                                authBusy = true
+                                try {
+                                    val registered = authRepository.register(name, email, password)
+                                    backStack.removeLastOrNull()
+                                    verificationEmail = registered.email
+                                    verificationCode = ""
+                                    verificationError = null
+                                    verificationInfo = null
+                                } catch (error: CancellationException) {
+                                    throw error
+                                } catch (error: Exception) {
+                                    authMessage = error.toApiUserMessage()
+                                } finally {
+                                    authBusy = false
+                                }
+                            }
                         },
                         onGoogleRegister = {
                             googleError = null
@@ -116,7 +163,8 @@ fun AdvanceNavigationWrapper(regimeDataStore: RegimeDataStore) {
                         },
                         onLogin = {
                             backStack.removeLastOrNull()
-                        }
+                        },
+                        isLoading = authBusy,
                     )
                 }
                 is Routes.RecoverPassword -> NavEntry(key) {
@@ -133,7 +181,7 @@ fun AdvanceNavigationWrapper(regimeDataStore: RegimeDataStore) {
                 is Routes.Home -> NavEntry(key) {
                     HomeScreen(
                         regimeDataStore = regimeDataStore,
-                        userName = "Juan",
+                        userName = userDisplayName,
                         onNavigate = { destination ->
                             when (destination) {
                                 "Inicio" -> {
@@ -161,8 +209,12 @@ fun AdvanceNavigationWrapper(regimeDataStore: RegimeDataStore) {
                                 }
 
                                 "Cerrar sesión" -> {
-                                    backStack.clear()
-                                    backStack.add(Routes.Login)
+                                    coroutineScope.launch {
+                                        try { authRepository.logout() }
+                                        catch (error: CancellationException) { throw error }
+                                        catch (error: Exception) { authMessage = error.toApiUserMessage() }
+                                        finally { userDisplayName = "MineLife"; backStack.clear(); backStack.add(Routes.Login) }
+                                    }
                                 }
                             }
                         }
@@ -208,7 +260,7 @@ fun AdvanceNavigationWrapper(regimeDataStore: RegimeDataStore) {
                 is Routes.Calendar -> NavEntry(key) {
                     CalendarScreen(
                         regimeDataStore = regimeDataStore,
-                        userName = "Juan",
+                        userName = userDisplayName,
                         onNavigate = { destination ->
                             when (destination) {
                                 "Inicio" -> backStack.add(Routes.Home)
@@ -250,6 +302,58 @@ fun AdvanceNavigationWrapper(regimeDataStore: RegimeDataStore) {
                     Text("Aceptar")
                 }
             }
+        )
+    }
+    authMessage?.let { message ->
+        AlertDialog(
+            onDismissRequest = { authMessage = null },
+            title = { Text("MineLife") },
+            text = { Text(message) },
+            confirmButton = { TextButton(onClick = { authMessage = null }) { Text("Aceptar") } },
+        )
+    }
+    verificationEmail?.let { email ->
+        EmailVerificationDialog(
+            email = email,
+            code = verificationCode,
+            onCodeChange = { verificationCode = it; verificationError = null },
+            busy = verificationBusy,
+            errorMessage = verificationError,
+            infoMessage = verificationInfo,
+            onVerify = {
+                if (!verificationBusy && verificationCode.length == 8) coroutineScope.launch {
+                    verificationBusy = true
+                    verificationError = null
+                    try {
+                        authRepository.verifyEmail(verificationCode)
+                        verificationEmail = null
+                        authMessage = "Correo verificado. Ya puedes iniciar sesión."
+                    } catch (error: CancellationException) {
+                        throw error
+                    } catch (error: Exception) {
+                        verificationError = error.toApiUserMessage()
+                    } finally {
+                        verificationBusy = false
+                    }
+                }
+            },
+            onResend = {
+                if (!verificationBusy) coroutineScope.launch {
+                    verificationBusy = true
+                    verificationError = null
+                    verificationInfo = null
+                    try {
+                        authRepository.resendVerification(email)
+                        verificationInfo = "Si la cuenta aún requiere verificación, enviamos un nuevo código."
+                    } catch (error: CancellationException) {
+                        throw error
+                    } catch (error: Exception) {
+                        verificationError = error.toApiUserMessage()
+                    } finally {
+                        verificationBusy = false
+                    }
+                }
+            },
         )
     }
 
