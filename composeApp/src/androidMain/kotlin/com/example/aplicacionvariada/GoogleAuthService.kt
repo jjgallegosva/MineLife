@@ -1,24 +1,18 @@
 package com.example.aplicacionvariada
 
 import android.content.Context
-import android.util.Log
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import com.example.aplicacionvariada.auth.GoogleAuthClient
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
-import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.CancellationException
 
 class GoogleAuthService(
     private val context: Context
 ) : GoogleAuthClient {
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-
-    override suspend fun registerWithGoogle(): Result<String> {
-        println("GoogleFlow: SE PULSÓ EL BOTÓN DE GOOGLE3")
+    override suspend fun getGoogleIdToken(): Result<String> {
         return try {
             val credentialManager = CredentialManager.create(context)
 
@@ -34,7 +28,6 @@ class GoogleAuthService(
                 .addCredentialOption(googleOption)
                 .build()
 
-            // Solicitar una credencial nueva al usuario.
             val result = credentialManager.getCredential(
                 context = context,
                 request = request
@@ -55,34 +48,11 @@ class GoogleAuthService(
             val googleCredential =
                 GoogleIdTokenCredential.createFrom(credential.data)
 
-            // No guardar ni reutilizar este token.
-            val firebaseCredential = GoogleAuthProvider.getCredential(
-                googleCredential.idToken,
-                null
-            )
-            Log.e("GoogleAuthService", "2. Token de Google obtenido")
-            Log.e("GoogleAuthService", "3. Enviando credencial a Firebase")
+            Result.success(googleCredential.idToken)
 
-            val authResult =
-                auth.signInWithCredential(firebaseCredential).await()
-            Log.e(
-                "GoogleAuthService",
-                "Firebase login exitoso: ${authResult.user?.uid}"
-            )
-            val user = authResult.user
-                ?: throw IllegalStateException(
-                    "Firebase no devolvió un usuario."
-                )
-
-            Result.success(user.uid)
-
+        } catch (error: CancellationException) {
+            throw error
         } catch (e: Exception) {
-            Log.e(
-                "GoogleAuthService",
-                "Falló la autenticación con Google",
-                e
-            )
-
             Result.failure(e)
         }
     }

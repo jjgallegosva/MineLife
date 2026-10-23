@@ -79,6 +79,8 @@ class MineLifeApi(@PublishedApi internal val client: HttpClient = HttpClient {
 @Serializable
 data class LoginRequest(val email: String, val password: String, val deviceName: String? = null)
 @Serializable
+data class GoogleLoginRequest(val idToken: String, val deviceName: String? = null)
+@Serializable
 data class RegisterRequest(val email: String, val displayName: String, val password: String, val deviceName: String? = null)
 @Serializable
 data class RefreshRequest(val refreshToken: String)
@@ -99,6 +101,14 @@ class AuthRepository(private val api: MineLifeApi = MineLifeApi()) {
     private val refreshMutex = Mutex()
     suspend fun login(email: String, password: String): TokenPair {
         val result = api.post<ApiEnvelope<TokenPair>, LoginRequest>("auth/login", LoginRequest(email.trim().lowercase(), password, "MineLife mobile"))
+        session = result.data
+        return result.data
+    }
+    suspend fun loginWithGoogle(idToken: String): TokenPair {
+        val result = api.post<ApiEnvelope<TokenPair>, GoogleLoginRequest>(
+            "auth/google",
+            GoogleLoginRequest(idToken, "MineLife Android"),
+        )
         session = result.data
         return result.data
     }

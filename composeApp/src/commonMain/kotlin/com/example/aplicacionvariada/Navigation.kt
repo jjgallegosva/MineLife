@@ -85,23 +85,27 @@ fun AdvanceNavigationWrapper(regimeDataStore: RegimeDataStore) {
                         },
 
                         onGoogleLogin = {
-                            println("GoogleFlow: SE PULSÓ EL BOTÓN DE GOOGLE")
-                            googleError = null
-
-                            coroutineScope.launch {
+                            if (!authBusy) coroutineScope.launch {
+                                authBusy = true
+                                googleError = null
                                 try {
-                                    println("GoogleFlow: SE PULSÓ EL BOTÓN DE GOOGLE2")
-                                    val result = googleAuthClient.registerWithGoogle()
-
-                                    result.onSuccess {
-                                        backStack.add(Routes.Home)
-                                    }.onFailure { error ->
-                                        googleError = error.message
-                                            ?: "No se pudo iniciar sesión con Google."
+                                    val idToken = googleAuthClient.getGoogleIdToken().getOrThrow()
+                                    authRepository.loginWithGoogle(idToken)
+                                    userDisplayName = try {
+                                        authRepository.currentProfile().displayName
+                                    } catch (error: CancellationException) {
+                                        throw error
+                                    } catch (_: Exception) {
+                                        "MineLife"
                                     }
+                                    backStack.clear()
+                                    backStack.add(Routes.Home)
+                                } catch (error: CancellationException) {
+                                    throw error
                                 } catch (error: Exception) {
-                                    googleError = error.message
-                                        ?: "Ocurrió un error al iniciar sesión."
+                                    googleError = error.toApiUserMessage()
+                                } finally {
+                                    authBusy = false
                                 }
                             }
                         },
@@ -140,21 +144,27 @@ fun AdvanceNavigationWrapper(regimeDataStore: RegimeDataStore) {
                             }
                         },
                         onGoogleRegister = {
-                            googleError = null
-
-                            coroutineScope.launch {
+                            if (!authBusy) coroutineScope.launch {
+                                authBusy = true
+                                googleError = null
                                 try {
-                                    val result = googleAuthClient.registerWithGoogle()
-
-                                    result.onSuccess {
-                                        backStack.add(Routes.Home)
-                                    }.onFailure { error ->
-                                        googleError = error.message
-                                            ?: "No se pudo autenticar con Google."
+                                    val idToken = googleAuthClient.getGoogleIdToken().getOrThrow()
+                                    authRepository.loginWithGoogle(idToken)
+                                    userDisplayName = try {
+                                        authRepository.currentProfile().displayName
+                                    } catch (error: CancellationException) {
+                                        throw error
+                                    } catch (_: Exception) {
+                                        "MineLife"
                                     }
+                                    backStack.clear()
+                                    backStack.add(Routes.Home)
+                                } catch (error: CancellationException) {
+                                    throw error
                                 } catch (error: Exception) {
-                                    googleError = error.message
-                                        ?: "Ocurrió un error al conectar con Google."
+                                    googleError = error.toApiUserMessage()
+                                } finally {
+                                    authBusy = false
                                 }
                             }
                         },
